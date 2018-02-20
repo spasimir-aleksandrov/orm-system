@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class TestClass {
 
-	private static final String DB_PASS = "SECRET123";
+	private static final String DB_PASS = "root";
 	private static final String DB_PORT = "3306";
 	private static final String DB_HOST = "localhost";
 	private static final String DB_NAME = "javatask";
