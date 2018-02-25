@@ -3,7 +3,6 @@ package main;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class TestClass {
 
@@ -17,7 +16,7 @@ public class TestClass {
 
 		DBActions<Employee> dbaction = new DBActions<Employee>();
 		Employee employee = new Employee("gosho", "toshov", 5);
-		dbaction.createTable(employee);
+		dbaction.updateEntry(employee, employee.getId());
 		dbaction.checkIfMapper(employee);
 
 		Connection connection = null;
@@ -26,18 +25,14 @@ public class TestClass {
 			connection = DriverManager.getConnection("jdbc:myslq://" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME, DB_USER,
 					DB_PASS);
 			connection.setAutoCommit(false);
-
-			Statement statement = connection.createStatement();
-			connection.createStatement().executeUpdate(dbaction.deleteEntry(employee));
-			connection.commit();
-
-			statement.close();
-		} catch (ClassNotFoundException | SQLException e) {
 			try {
+			connection.createStatement().executeUpdate("e.g. update entry");
+			connection.commit();
+			} catch (SQLException e) {
 				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
+				e.printStackTrace();
 			}
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		} finally {
 			if (connection != null) {

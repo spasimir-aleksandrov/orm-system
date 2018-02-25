@@ -8,14 +8,20 @@ import java.util.HashMap;
 
 public class DBActions<T> {
 
-	public void addEntry(T t) {
+	public String addEntry(T t) {
+		HashMap<String, String> objectProperties = new HashMap<String, String>();
 		try {
-			readObject(t);
+			objectProperties = readObject(t);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		String allKeys = objectProperties.keySet().toString().replace('[', ' ').replace(']', ' ');
+		String allVvalues = objectProperties.values().toString().replace('[', ' ').replace(']', ' ');
+		String statement = "Update " + t.getClass() + " ( " + allKeys + ") values ( " + allVvalues + ")";
+		return statement;
 	}
 
+	// TO DO - figure out based on what to update entry
 	public String deleteEntry(T t) {
 		String statement = "";
 		try {
@@ -26,23 +32,27 @@ public class DBActions<T> {
 		return statement;
 	}
 
-	public String updateEntry(T t) {
-		String statement = "";
+	public String updateEntry(T t, int id) {
+		HashMap<String, String> objectProperties = new HashMap<String, String>();
 		try {
-			readObject(t);
+			objectProperties = readObject(t);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		String allKeys = objectProperties.keySet().toString().replace('[', ' ').replace(']', ' ');
+		String allVvalues = objectProperties.values().toString().replace('[', ' ').replace(']', ' ');
+		String statement = "Update " + t.getClass() + " ( " + allKeys + ") values ( " + allVvalues + ") where id="
+				+ objectProperties.get(id);
 		return statement;
 	}
 
 	public String createTable(T t) {
-		String statement = "";
 		try {
 			readObject(t);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		String statement = "Create table " + t.getClass() + "";
 		return statement;
 	}
 
