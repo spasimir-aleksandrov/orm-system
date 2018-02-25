@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class TestClass {
 
-	private static final String DB_PASS = "root";
+	private static final String DB_PASS = "root123";
 	private static final String DB_PORT = "3306";
 	private static final String DB_HOST = "localhost";
 	private static final String DB_NAME = "javatask";
@@ -16,13 +16,12 @@ public class TestClass {
 
 		DBActions<Employee> dbaction = new DBActions<Employee>();
 		Employee employee = new Employee("gosho", "toshov", 5);
-		dbaction.updateEntry(employee, employee.getId());
-		dbaction.checkIfMapper(employee);
+		dbaction.updateEntry(employee);
 
 		Connection connection = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:myslq://" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME, DB_USER,
+			connection = DriverManager.getConnection("jdbc:mysql://" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME, DB_USER,
 					DB_PASS);
 			connection.setAutoCommit(false);
 			try {
