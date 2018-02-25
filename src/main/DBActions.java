@@ -18,7 +18,8 @@ public class DBActions<T> {
 			}
 			String allKeys = objectProperties.keySet().toString().replace('[', ' ').replace(']', ' ');
 			String allVvalues = objectProperties.values().toString().replace('[', ' ').replace(']', ' ');
-			String statement = "Update " + t.getClass() + " ( " + allKeys + ") values ( " + allVvalues + ")";
+			String statement = "Update " + t.getClass().getSimpleName() + " ( " + allKeys + ") values ( " + allVvalues
+					+ ");";
 			return statement;
 		} else {
 			throw new UnsupportedOperationException("Object does not implement Mappable interface");
@@ -33,7 +34,7 @@ public class DBActions<T> {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			String statement = "Delete from " + t.getClass() + "where id = " + id;
+			String statement = "Delete from " + t.getClass().getSimpleName() + "where id = " + id + ";";
 			return statement;
 		} else {
 			throw new UnsupportedOperationException("Object does not implement Mappable interface");
@@ -51,8 +52,9 @@ public class DBActions<T> {
 			}
 			String allKeys = objectProperties.keySet().toString().replace('[', ' ').replace(']', ' ');
 			String allValues = objectProperties.values().toString().replace('[', ' ').replace(']', ' ');
-			String statement = "Update " + t.getClass() + " ( " + allKeys + ") values ( " + allValues + ") where id="
-				+ objectProperties.get("id");
+			String statement = "Update " + t.getClass().getSimpleName() + " ( " + allKeys + ") values ( " + allValues
+					+ ") where id="
+					+ objectProperties.get("id") + ";";
 			return statement;
 		} else {
 			throw new UnsupportedOperationException("Object does not implement Mappable interface");
@@ -61,12 +63,19 @@ public class DBActions<T> {
 
 	public String createTable(T t) {
 		if (checkIfMappable(t)) {
+			HashMap<String, String> objectProperties = new HashMap<String, String>();
+			HashMap<String, String> modifiedEntry = new HashMap<String, String>();
 			try {
-				readObject(t);
+				objectProperties = readObject(t);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			String statement = "Create table " + t.getClass() + " (";
+			for (String key : objectProperties.keySet()) {
+				modifiedEntry.put(key + " varchar(255)",
+						objectProperties.get(key));
+			}
+			String allKeys = modifiedEntry.keySet().toString().replace('[', ' ').replace(']', ' ');
+			String statement = "Create table " + t.getClass().getSimpleName() + " (" + allKeys + ");";
 			return statement;
 		} else {
 			throw new UnsupportedOperationException("Object does not implement Mappable interface");

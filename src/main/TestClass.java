@@ -16,7 +16,6 @@ public class TestClass {
 
 		DBActions<Employee> dbaction = new DBActions<Employee>();
 		Employee employee = new Employee("gosho", "toshov", 5);
-		dbaction.updateEntry(employee);
 
 		Connection connection = null;
 		try {
@@ -25,7 +24,7 @@ public class TestClass {
 					DB_PASS);
 			connection.setAutoCommit(false);
 			try {
-			connection.createStatement().executeUpdate("e.g. update entry");
+				connection.createStatement().executeUpdate(dbaction.createTable(employee));
 			connection.commit();
 			} catch (SQLException e) {
 				connection.rollback();
