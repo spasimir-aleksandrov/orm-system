@@ -5,6 +5,8 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DBActions<T> {
 
@@ -63,18 +65,19 @@ public class DBActions<T> {
 
 	public String createTable(T t) {
 		if (checkIfMappable(t)) {
-			HashMap<String, String> objectProperties = new HashMap<String, String>();
-			HashMap<String, String> modifiedEntry = new HashMap<String, String>();
+			// HashMap<String, String> objectProperties = new HashMap<String, String>();
+			//HashMap<String, String> modifiedEntry = new HashMap<String, String>();
+			Set<String> keys = new HashSet<String>();
+			Set<String> modifiedKeys = new HashSet<String>();
 			try {
-				objectProperties = readObject(t);
+				keys = readObject(t).keySet();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			for (String key : objectProperties.keySet()) {
-				modifiedEntry.put(key + " varchar(255)",
-						objectProperties.get(key));
+			for (String key : keys) {
+				modifiedKeys.add(key + " varchar(255)");
 			}
-			String allKeys = modifiedEntry.keySet().toString().replace('[', ' ').replace(']', ' ');
+			String allKeys = modifiedKeys.toString().replace('[', ' ').replace(']', ' ');
 			String statement = "Create table " + t.getClass().getSimpleName() + " (" + allKeys + ");";
 			return statement;
 		} else {
