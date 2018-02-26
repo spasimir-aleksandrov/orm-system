@@ -65,8 +65,6 @@ public class DBActions<T> {
 
 	public String createTable(T t) {
 		if (checkIfMappable(t)) {
-			// HashMap<String, String> objectProperties = new HashMap<String, String>();
-			//HashMap<String, String> modifiedEntry = new HashMap<String, String>();
 			Set<String> keys = new HashSet<String>();
 			Set<String> modifiedKeys = new HashSet<String>();
 			try {
